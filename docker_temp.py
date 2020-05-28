@@ -8,6 +8,9 @@ class User():
     def setup(self):
         self.image_list = self.client.images.list()
         self.volume_list = self.client.volumes.list()
+    
+    def setImageList(self, image_list):
+        self.image_list = image_list
 
     def addImage(self, image):
         self.image_list.append(image)

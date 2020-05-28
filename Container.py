@@ -4,6 +4,14 @@ from ListItem import ContainerListItem
 from Connection import Connection
 from ButtonTabWidget import ButtonWidget
 from Popup import Popup, CreateContainerForm
+from docker_temp import User
+
+from PySide2.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+
+from pyside_material import apply_stylesheet
+
 import sys
 import docker
 import time
@@ -19,7 +27,6 @@ class CustomListHead(QtWidgets.QWidget):
         self.show()
 
 # -----------------------------------
-
 
 class ListWidget(QtWidgets.QListWidget):
     def __init__(self):
@@ -37,6 +44,9 @@ class ListWidget(QtWidgets.QListWidget):
     def UpdateList(self, containers):
         self.container_list = []
         self.clear()
+        ListItem = ContainerListItem('c_name',' i_name', 'ip',  'owner', 'id', 'status', is_header=True)
+        self.addCustomItem(ListItem)
+        
         for c in containers:
             ListItem = ContainerListItem(
                 c.image.short_id, c.attrs["Config"]["Image"], c.attrs["Platform"], "Local Admin", c.id, c.status)
@@ -61,8 +71,10 @@ class ListWidget(QtWidgets.QListWidget):
 
 
 class Container(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, user):
         QtWidgets.QWidget.__init__(self, None)
+        self.user = user
+        self.containerForm = QDialog()
         self.list_widget = ListWidget()
         self.button_array = ButtonWidget(8)
         titles = ["start", "stop", "kill",
@@ -70,7 +82,7 @@ class Container(QtWidgets.QWidget):
         colors = ["green", "red", "red", "blue",
                   "blue", "blue", "red", "black"]
         func = [self.startContainers, self.stopContainers, self.killContainers, self.restartContainers,
-                self.pauseContainers, self.unpauseContainers, self.removeContainers, self.createContainer]
+                self.pauseContainers, self.unpauseContainers, self.removeContainers, self.createContainerForm]
         self.button_array.setupButtons(titles, colors, func)
         self.set_ui()
 
@@ -78,9 +90,13 @@ class Container(QtWidgets.QWidget):
         self.c = Connection()
         lst = self.c.getContainersDetail()
         self.list_widget.UpdateList(lst)
+        label = QLabel('IMAGES VIEWER')
+        label.setStyleSheet('font-size: 16pt;')
         vertical_layout = QtWidgets.QVBoxLayout()
+        vertical_layout.addWidget(label)
         vertical_layout.addWidget(self.button_array)
         vertical_layout.addWidget(self.list_widget)
+        vertical_layout.setSpacing(20)
         self.setLayout(vertical_layout)
         self.show()
 
@@ -158,19 +174,65 @@ class Container(QtWidgets.QWidget):
                 except docker.errors.APIError as e:
                     print(e)
                     p = Popup(e)
-        time.sleep(5)
+        #time.sleep(5)
         self.list_widget.UpdateList(self.c.getContainersDetail())
+        
+    def createContainerForm(self):
+        self.containerForm = QDialog()
+        
+        name = QLabel('Name')
+        image = QLabel('Image')
+        review = QLabel('Port Mapping')
+        env = QLabel('Environmental variables')
 
-    def createContainer(self, widget):
-        form = CreateContainerForm()
-        b = form.getOk()
-        print(b)
-        b.clicked.connect(self.createContainerHandler)
+        self.nameEdit = QLineEdit()
+        self.imageEdit = QLineEdit()
+        self.reviewEdit = QTextEdit()
+        self.envEdit = QTextEdit()
 
-    def createContainerHandler(self):
-        print("hello")
-        # print(widget.nameEdit.displayText)
+        grid = QGridLayout()
+        grid.setSpacing(10)
 
+        grid.addWidget(name, 1, 0)
+        grid.addWidget(self.nameEdit, 1, 1)
+
+        grid.addWidget(image, 2, 0)
+        grid.addWidget(self.imageEdit, 2, 1)
+
+        grid.addWidget(review, 3, 0)
+        grid.addWidget(self.reviewEdit, 3, 1, 1, 1)
+
+        grid.addWidget(env, 6, 0)
+        grid.addWidget(self.envEdit, 6, 1, 2, 1)
+
+        ok = QPushButton("Ok")
+        grid.addWidget(ok, 10, 0)
+        ok.clicked.connect(self.executeCreateContainer)
+
+
+        cancel = QPushButton("Cancel")
+        grid.addWidget(cancel, 10, 1, 1, 1)
+        cancel.clicked.connect(self.cancelButtonIsClicked)
+
+        self.containerForm.setLayout(grid)
+
+        self.containerForm.setGeometry(300, 300, 500, 500)
+        self.containerForm.setWindowTitle('Create container')
+
+        self.containerForm.exec_()
+
+    def cancelButtonIsClicked(self):
+        self.containerForm.close()
+
+    def executeCreateContainer(self):
+        client = docker.from_env()
+        client.containers.run(image = self.imageEdit.text()),\
+                                            #environment = None,\
+                                            #name = None,\
+                                            #port = None)
+        self.containerForm.close()
+        self.list_widget.UpdateList(self.c.getContainersDetail())
+        return
 
 class MainWindowUI(QtWidgets.QMainWindow):
     def __init__(self):
@@ -178,9 +240,10 @@ class MainWindowUI(QtWidgets.QMainWindow):
         self.set_ui()
 
     def set_ui(self):
+        client = docker.from_env()
         apply_stylesheet(app, theme='dark_pink.xml')
         vertical_layout = QtWidgets.QVBoxLayout()
-        widget = Container()
+        widget = Container(client)
         widget.setLayout(vertical_layout)
         self.setCentralWidget(widget)
         self.show()

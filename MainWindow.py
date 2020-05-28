@@ -36,7 +36,7 @@ class MainWindow(QWidget):
         self.homepage = Homepage()
         self.dashboard = Dashboard(1 , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList(), self.listView)
         
-        self.container = Container()
+        self.container = Container(self.user)
         self.images = ListImages(self.user)
         self.volumes = VolumeList(self.user)
 

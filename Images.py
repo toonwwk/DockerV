@@ -64,7 +64,6 @@ class ListImages(QWidget):
         
         self.layout.setAlignment(Qt.AlignTop)
 
-
     def searching(self):
         keyword = self.lineEdit.text()
         if len(keyword) == 0:
@@ -73,14 +72,17 @@ class ListImages(QWidget):
         temp = []
         for image in self.images_list:
             if keyword in image.tags[0]:
+                print(image.tags[0])
                 temp.append(image)
         
         self.images_list = temp
+        self.user.setImageList(self.images_list)
         self.refresh(self.images_list)
         return
 
     def refreshButtonIsClicked(self):
         self.listImageView.clear()
+        self.user.setup()
         images_list = self.user.getImagesList()
         self.createImageList(images_list)
         return
@@ -99,7 +101,6 @@ class ListImages(QWidget):
         self.listImageView.addItem(item)
         self.listImageView.setItemWidget(item, image_detail)
         cb.stateChanged.connect(lambda state, c = cb:(self.checkboxIsPressed(c)))
-
 
     def createImageList(self, image_list):
         header = ['Id', 'Tags', 'Size', 'Created']
@@ -187,8 +188,7 @@ class ListImages(QWidget):
             self.reposity.setPlaceholderText('pull success')
             self.reposity.setText('')
             self.user.addImage(image)
-            image_detail = ImageDetails(self.user.getImageDetail(self.user.getNumberOfImageList() - 1))
-            self.createListItem(image_detail)
+            self.refreshButtonIsClicked()
             self.dlg.close()
         else:
             self.reposity.setPlaceholderText('invalid image repository name')
