@@ -21,10 +21,16 @@ class Dashboard(QWidget):
         containers_path = os.path.join(path, 'containers.png')
         images_path = os.path.join(path, 'images.png')
         volumes_path = os.path.join(path, 'volumes.png')
+        dashboard_path = os.path.join(path, 'dashboard.png')
 
         self.containers = DashboardItem(containers, containers_path, "Containers")
         self.images = DashboardItem(images, images_path, "Images")
         self.volumes = DashboardItem(volumes, volumes_path, "Volumes")
+
+        self.dashboard_pic = QLabel()
+        self.dashboard_pic.setPixmap(QPixmap(dashboard_path))
+
+        
 
         images_labels = self.images.getClickableLabel()
         images_labels[0].clicked.connect(self.imagesIsClicked)
@@ -43,17 +49,19 @@ class Dashboard(QWidget):
 
         # Setup Qt
         self.label = QLabel('DASHBOARD')
-        self.label.setStyleSheet('font-size: 16pt;')
+        self.label.setStyleSheet('font-family: Optima; font-size: 40pt; ')
     
-        
         self.row1 = QHBoxLayout()
+        self.row1.setSpacing(40)
         self.row1.addWidget(self.label)
-        self.row1.setAlignment(Qt.AlignLeft)
+        self.row1.addWidget(self.dashboard_pic)
+        self.row1.setAlignment(Qt.AlignCenter)
 
         sub_layout = QVBoxLayout()
         sub_layout.addWidget(self.containers)
         sub_layout.addWidget(self.images)
         sub_layout.addWidget(self.volumes)
+        sub_layout.setAlignment(Qt.AlignCenter)
         sub_layout.setSpacing(50)
 
         layout = QVBoxLayout(self)

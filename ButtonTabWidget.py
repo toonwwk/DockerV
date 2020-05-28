@@ -9,7 +9,7 @@ class ButtonWidget(QWidget):
         self.button_list = []
         self.layout = QHBoxLayout()
 
-        self.layout.setAlignment(Qt.AlignLeft)
+        self.layout.setAlignment(Qt.AlignTop)
         self.layout.setSpacing(10)
         self.layout.setMargin(0)
         self.setLayout(self.layout)

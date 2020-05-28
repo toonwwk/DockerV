@@ -1,5 +1,5 @@
 import sys
-
+import os
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
@@ -23,12 +23,21 @@ class ListImages(QWidget):
         self.layout = QVBoxLayout(self)
         
         self.label = QLabel('IMAGES LIST')
-        self.label.setStyleSheet('font-size: 16pt;')
+        self.label.setStyleSheet('font-family: Optima; font-size: 40pt;')
 
         self.label2 = QLabel('SEARCH')
-        self.label2.setStyleSheet('font-size: 16pt;')
+        self.label2.setStyleSheet('font-family: Optima; font-size: 16pt;')
         self.lineEdit = QLineEdit()
         self.lineEdit.textChanged.connect(self.searching)
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(base_dir, 'images')
+        images_path = os.path.join(path, 'images.png')
+
+        self.images_pic = QLabel()
+        self.images_pic.setPixmap(QPixmap(images_path))
+
+
 
         self.filterView = None
 
@@ -48,7 +57,8 @@ class ListImages(QWidget):
         # Row Setup
         self.row1 = QHBoxLayout()
         self.row1.addWidget(self.label)
-        self.row1.setAlignment(Qt.AlignLeft)
+        self.row1.addWidget(self.images_pic)
+        self.row1.setAlignment(Qt.AlignCenter)
 
         self.row2 = QHBoxLayout()
         self.row2.setSpacing(55)

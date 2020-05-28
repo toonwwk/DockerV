@@ -91,7 +91,7 @@ class Container(QtWidgets.QWidget):
         lst = self.c.getContainersDetail()
         self.list_widget.UpdateList(lst)
         label = QLabel('CONTAINER LIST')
-        label.setStyleSheet('font-size: 16pt;')
+        label.setStyleSheet('font-family: Optima; font-size: 40pt;')
         vertical_layout = QtWidgets.QVBoxLayout()
         vertical_layout.addWidget(label)
         vertical_layout.addWidget(self.button_array)

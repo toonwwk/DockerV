@@ -1,3 +1,5 @@
+import os
+import sys
 from PySide2 import QtWidgets
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
@@ -12,11 +14,20 @@ class VolumeList(QWidget):
         super(VolumeList, self).__init__()
         self.user = user
         self.checkbox_volume_dic = {}
-        self.volume_list = slf.user.getVolumeList()
+        self.volume_list = self.user.getVolumeList()
         self.selected_volume_list = []
 
         self.label = QLabel('VOLUME LIST')
-        self.label.setStyleSheet('font-size: 16pt;')
+        self.label.setStyleSheet('font-family: Optima; font-size: 40pt; ')
+        
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(base_dir, 'images')
+        volumes_path = os.path.join(path, 'volumes.png')
+
+        self.volume_pic = QLabel()
+        self.volume_pic.setPixmap(QPixmap(volumes_path))
+
+
 
         self.buttonTab = ButtonWidget(3)
         self.buttonTab.setupButtons(['Refresh', 'Add volume', 'Remove'], ['#397D00', 'Red', '#b06a00'])
@@ -29,8 +40,16 @@ class VolumeList(QWidget):
         self.volume_list_view.ScrollMode(True)
 
         self.setup()
+
+
+        self.row1 = QHBoxLayout()
+        self.row1.setSpacing(40)
+        self.row1.addWidget(self.label)
+        self.row1.addWidget(self.volume_pic)
+        self.row1.setAlignment(Qt.AlignCenter)
+        
         layout = QVBoxLayout(self)
-        layout.addWidget(self.label)
+        layout.addLayout(self.row1)
         layout.addWidget(self.buttonTab)
         layout.addWidget(self.volume_list_view)
         layout.setSpacing(20)

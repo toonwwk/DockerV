@@ -1,4 +1,5 @@
 import sys
+import os
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
@@ -8,6 +9,7 @@ from ButtonTabWidget import ButtonWidget
 from TitleWidget import TitleLabel
 from Homepage import Homepage
 from Log import Log
+
 from Graph import Graph
 from ContainerStat import ContainerStat
 from Images import ListImages
@@ -22,6 +24,17 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__()
         self.user = User()
         self.setMinimumSize(1200 ,800)
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(base_dir, 'images')
+
+        self.home_path = os.path.join(path, 'docker_image_16.png')
+        self.containers_path = os.path.join(path, 'containers_icon.png')
+        self.images_path = os.path.join(path, 'images_icon.png')
+        self.volumes_path = os.path.join(path, 'volumes_icon.png')
+        self.dashboard_path = os.path.join(path, 'dashboard_icon.png')
+        
+        
 
         #create side menu 
         self.listView = QListWidget()
@@ -56,11 +69,16 @@ class MainWindow(QWidget):
         self.setLayout(self.layout)
         self.setupMenu()
 
+
     def setupMenu(self):
+        imageList = [self.home_path,self.dashboard_path,self.containers_path,self.images_path,self.volumes_path]
         menuList = ['HOME', 'DASHBOARD', 'CONTAINERS', 'IMAGES', 'VOLUMES']
         for i in range (len(menuList)):
-            self.listView.insertItem(i, menuList[i])
-            # self.listView.item(i).setFont(QFont('Roboto', 16))
+            itm = QListWidgetItem(menuList[i])
+            itm.setIcon(QIcon(imageList[i]))
+            self.listView.addItem(itm)
+
+
 
     def on_selection_changed(self):
         index = self.listView.currentRow()
