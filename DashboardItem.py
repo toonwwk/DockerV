@@ -23,10 +23,6 @@ class DashboardItem(QWidget):
         self.amount.setStyleSheet('font-size: 16pt;')
         self.name.setStyleSheet('font-size: 16pt;')
 
-        self.icon.clicked.connect(self.press1)
-        self.amount.clicked.connect(self.press1)
-        self.name.clicked.connect(self.press1)
-
         self.picture.setFixedSize(100,100)
         self.picture.setScaledContents(True)
 
@@ -40,8 +36,7 @@ class DashboardItem(QWidget):
 
         self.setLayout(layout)
 
-    def press1(self):
-        print("pressed")
-        
+    def getClickableLabel(self):
+        return [self.amount, self.name]
 
 

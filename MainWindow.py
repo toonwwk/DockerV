@@ -30,7 +30,7 @@ class MainWindow(QWidget):
         # add widget of each page here
         # home dashboard stack service container images volume
         self.homepage = Homepage()
-        self.dashboard = Dashboard(1 ,2 ,3 ,4 ,5)
+        self.dashboard = Dashboard(1 ,2 ,3 ,4 ,5, self.listView)
         self.stack5 = QWidget()
         self.images = ListImages()
         self.volumes = VolumeList()

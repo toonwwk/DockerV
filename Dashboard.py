@@ -9,11 +9,12 @@ from DashboardItem import DashboardItem
 from pyside_material import apply_stylesheet
 
 class Dashboard(QWidget):
-    def __init__(self, stacks, containers, images, volumes, networks):
+    def __init__(self, stacks, containers, images, volumes, networks, list_widget):
         QWidget.__init__(self, None)
 
+        self.list_widget = list_widget
+
         # Setup Customize (Image)
-        
         base_dir = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(base_dir, 'images')
 
@@ -28,6 +29,18 @@ class Dashboard(QWidget):
         self.images = DashboardItem(images, images_path, "Images")
         self.volumes = DashboardItem(volumes, volumes_path, "Volumes")
         self.networks = DashboardItem(networks, networks_path, "Networks")
+
+        images_labels = self.images.getClickableLabel()
+        images_labels[0].clicked.connect(self.imagesIsClicked)
+        images_labels[1].clicked.connect(self.imagesIsClicked)
+
+        containers_labels = self.containers.getClickableLabel()
+        containers_labels[0].clicked.connect(self.containersIsClicked)
+        containers_labels[1].clicked.connect(self.containersIsClicked)
+
+        volumes_labels = self.volumes.getClickableLabel()
+        volumes_labels[0].clicked.connect(self.volumesIsClicked)
+        volumes_labels[1].clicked.connect(self.volumesIsClicked)
 
         # Setup Qt
         self.label = QLabel('DASHBOARD')
@@ -58,4 +71,15 @@ class Dashboard(QWidget):
         layout.setAlignment(Qt.AlignTop)
         layout.setSpacing(150)
 
-        
+    
+    def imagesIsClicked(self):
+        self.list_widget.setCurrentRow(3, QItemSelectionModel.ClearAndSelect)
+        return
+
+    def volumesIsClicked(self):
+        self.list_widget.setCurrentRow(4, QItemSelectionModel.ClearAndSelect)
+        return
+    
+    def containersIsClicked(self):
+        self.list_widget.setCurrentRow(2, QItemSelectionModel.ClearAndSelect)
+        return
