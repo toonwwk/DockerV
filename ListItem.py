@@ -7,10 +7,10 @@ from ClickableLabel import ClickableLabel
 
 
 class ContainerListItem(QtWidgets.QWidget):
-    def __init__(self, c_name, i_name, ip,  owner, id, status, ports=[], is_header = False):
+    def __init__(self, c_name, i_name, ip,  owner, id, status, is_header=False, ports=[]):
         super(ContainerListItem, self).__init__()
-        self.check_box = QtWidgets.QCheckBox() 
-        self.check_box.setMinimumSize(30, 50)       
+        self.check_box = QtWidgets.QCheckBox()
+        self.check_box.setMinimumSize(30, 50)
         self.container_name = ClickableLabel(c_name)
         self.container_name.setMinimumSize(200, 50)
         self.image_name = ClickableLabel(i_name)
@@ -29,8 +29,8 @@ class ContainerListItem(QtWidgets.QWidget):
 
     def set_ui(self):
         layout = QtWidgets.QHBoxLayout()
-        if is_header:
-            temp = QWidgets.QLabel('')
+        if self.is_header:
+            temp = QtWidgets.QLabel('')
             temp.setMinimumSize(30, 50)
             layout.addWidget(temp)
         else:
@@ -57,7 +57,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
 
         self.widget = ContainerListItem(
-            "alpine", "q12", "120.10.1.1", "baypc", "1", "exited")
+            "alpine", "q12", "120.10.1.1", "baypc", "1", "exited", True)
 
         self.setWindowTitle("DockerV")
 

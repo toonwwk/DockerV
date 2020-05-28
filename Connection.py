@@ -26,6 +26,13 @@ class Connection(object):
         containers = self.getList()
         return containers
 
+    def runContainer(self, name, image, ports, env):
+        try:
+            self.client.run(image=image, name=name,
+                            ports=ports, environment=env)
+        except:
+            print("error")
+
 
 c = Connection()
 print(c.getContainersDetail())
