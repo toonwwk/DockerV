@@ -1,3 +1,4 @@
+import sys 
 from PySide2.QtWidgets import *
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtCore import QFile
@@ -58,3 +59,11 @@ class Graph(QWidget):
         self.ui.MplWidget.canvas.axes.set_title(title)
         self.ui.MplWidget.canvas.draw()
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Graph('cpu', [1,2,3,4,5,6], [1,2,3,4,5,6])
+    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = True)
+    # apply_stylesheet(app, theme='dark_teal.xml', light_secondary = True)
+    window.show()
+
+    sys.exit(app.exec_())

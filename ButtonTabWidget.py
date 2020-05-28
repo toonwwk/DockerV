@@ -26,7 +26,7 @@ class ButtonWidget(QWidget):
         return self.button_list
 
     # set buttons title and color
-    def setupButtons(self, titleList, colorList):
+    def setupButtons(self, titleList, colorList, funcList = None):
         for index in range (len(self.button_list)):
             button = self.button_list[index]
             button.setFixedHeight(27)
@@ -35,6 +35,9 @@ class ButtonWidget(QWidget):
             clicked_style = 'QPushButton:pressed { background-color: black }'
             button.setText(title)
             button.setStyleSheet(style + clicked_style)
+
+            if funcList != None:
+                button.clicked.connect(funcList[index])
 
 
 

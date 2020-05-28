@@ -17,6 +17,8 @@ class VolumeItem(QWidget):
             temp = QLabel()
             temp.setMinimumSize(50 ,50)
             layout.addWidget(temp)
+        else:
+            created = self.formatCreated(created)
 
         self.name = QLabel(name)
         self.name.setMinimumSize(100, 50)
@@ -37,6 +39,10 @@ class VolumeItem(QWidget):
     
     def get_checkbox(self):
         return self.check_box
+
+    def formatCreated(self, string):
+        return string[0 : 10] + ':' + string[11 : 19]
+
         
 
 

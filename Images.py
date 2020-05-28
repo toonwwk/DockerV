@@ -12,9 +12,9 @@ from functools import partial
 
 
 class ListImages(QWidget):
-    def __init__(self):
+    def __init__(self, user):
         QWidget.__init__(self, None)
-        self.user = User()
+        self.user = user
         self.images_list = self.user.getImagesList()
 
         self.checkbox_tag_dic = {}
@@ -59,6 +59,7 @@ class ListImages(QWidget):
         self.layout.addWidget(self.buttonTab)
         self.layout.addLayout(self.row2)
         self.layout.addWidget(self.listImageView)
+        self.layout.setSpacing(20)
         
         self.layout.setAlignment(Qt.AlignTop)
 

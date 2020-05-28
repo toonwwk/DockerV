@@ -20,14 +20,14 @@ class DashboardItem(QWidget):
         self.amount = ClickableLabel(str(amount))
         self.name = ClickableLabel(name)
 
-        self.amount.setStyleSheet('font-size: 16pt;')
-        self.name.setStyleSheet('font-size: 16pt;')
+        self.amount.setStyleSheet('font-size: 30pt; font-weight: Bold;')
+        self.name.setStyleSheet('font-size: 20pt;')
 
         self.picture.setFixedSize(100,100)
         self.picture.setScaledContents(True)
 
         layout = QHBoxLayout(self)
-        layout.setSpacing(15)
+        layout.setSpacing(100)
         layout.addWidget(self.picture)                      
         layout.addWidget(self.amount)
         layout.addWidget(self.name)

@@ -13,15 +13,19 @@ from ContainerStat import ContainerStat
 from Images import ListImages
 from VolumeList import VolumeList
 from Dashboard import Dashboard
+from docker_temp import User
+from Container import Container
+
 
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.user = User()
         self.setMinimumSize(1200 ,800)
 
         #create side menu 
         self.listView = QListWidget()
-        self.listView.setMaximumWidth(120)
+        self.listView.setMaximumWidth(140)
         self.listView.itemSelectionChanged.connect(self.on_selection_changed)
         self.listView.ScrollMode(False)
 
@@ -30,16 +34,16 @@ class MainWindow(QWidget):
         # add widget of each page here
         # home dashboard stack service container images volume
         self.homepage = Homepage()
-        self.dashboard = Dashboard(1 ,2 ,3 ,4 ,5, self.listView)
-        self.stack5 = QWidget()
-        self.images = ListImages()
-        self.volumes = VolumeList()
+        self.dashboard = Dashboard(1 ,2 ,3, self.listView)
+        self.container = Container()
+        self.images = ListImages(self.user)
+        self.volumes = VolumeList(self.user)
 
         # self.log = Log('text.txt')
 
         self.stack.addWidget (self.homepage)
         self.stack.addWidget (self.dashboard)
-        self.stack.addWidget (self.stack5)
+        self.stack.addWidget (self.container)
         self.stack.addWidget (self.images)
         self.stack.addWidget (self.volumes)
 
@@ -48,7 +52,6 @@ class MainWindow(QWidget):
         self.layout.setAlignment(Qt.AlignTop)
         self.layout.addWidget(self.listView)
         self.layout.addWidget(self.stack)
-        self.layout.setSpacing(15)
 
         self.setLayout(self.layout)
         self.setupMenu()

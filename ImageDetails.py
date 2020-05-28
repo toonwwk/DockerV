@@ -39,7 +39,7 @@ class ImageDetails(QWidget):
         self.image_id.clicked.connect(self.press1)
         
 
-        layout.setSpacing(15)
+        layout.setSpacing(10)
         layout.addWidget(self.check_box)
         layout.addWidget(self.image_id)
         layout.addWidget(self.image_tag)

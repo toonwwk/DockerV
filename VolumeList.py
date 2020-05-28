@@ -8,9 +8,9 @@ from docker_temp import User
 from ButtonTabWidget import ButtonWidget
 
 class VolumeList(QWidget):
-    def __init__(self):
+    def __init__(self, user):
         super(VolumeList, self).__init__()
-        self.user = User()
+        self.user = user
         self.checkbox_volume_dic = {}
         self.volume_list = self.user.getVolumeList()
         self.selected_volume_list = []
@@ -18,11 +18,12 @@ class VolumeList(QWidget):
         self.label = QLabel('VOLUME LIST')
         self.label.setStyleSheet('font-size: 16pt;')
 
-        self.buttonTab = ButtonWidget(2)
-        self.buttonTab.setupButtons(['Add volume', 'Remove'], ['#397D00', '#b06a00'])
+        self.buttonTab = ButtonWidget(3)
+        self.buttonTab.setupButtons(['Refresh', 'Add volume', 'Remove'], ['#397D00', 'Red', '#b06a00'])
         self.buttonList = self.buttonTab.getButtonList()
-        self.buttonList[0].clicked.connect(self.addButtonIsClicked)
-        self.buttonList[1].clicked.connect(self.removeButtonIsClicked)
+        self.buttonList[0].clicked.connect(self.refresh)
+        self.buttonList[1].clicked.connect(self.addButtonIsClicked)
+        self.buttonList[2].clicked.connect(self.removeButtonIsClicked)
 
         self.volume_list_view = QListWidget()
         self.volume_list_view.ScrollMode(True)
@@ -32,6 +33,7 @@ class VolumeList(QWidget):
         layout.addWidget(self.label)
         layout.addWidget(self.buttonTab)
         layout.addWidget(self.volume_list_view)
+        layout.setSpacing(20)
 
     
     def setup(self):
