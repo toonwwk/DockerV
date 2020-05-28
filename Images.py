@@ -22,7 +22,7 @@ class ListImages(QWidget):
 
         self.layout = QVBoxLayout(self)
         
-        self.label = QLabel('IMAGES VIEWER')
+        self.label = QLabel('IMAGES LIST')
         self.label.setStyleSheet('font-size: 16pt;')
 
         self.label2 = QLabel('SEARCH')

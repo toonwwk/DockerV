@@ -12,7 +12,7 @@ class VolumeList(QWidget):
         super(VolumeList, self).__init__()
         self.user = user
         self.checkbox_volume_dic = {}
-        self.volume_list = self.user.getVolumeList()
+        self.volume_list = slf.user.getVolumeList()
         self.selected_volume_list = []
 
         self.label = QLabel('VOLUME LIST')

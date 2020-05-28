@@ -46,7 +46,7 @@ class ListWidget(QtWidgets.QListWidget):
         self.clear()
         ListItem = ContainerListItem('c_name',' i_name', 'ip',  'owner', 'id', 'status', is_header=True)
         self.addCustomItem(ListItem)
-        
+
         for c in containers:
             ListItem = ContainerListItem(
                 c.image.short_id, c.attrs["Config"]["Image"], c.attrs["Platform"], "Local Admin", c.id, c.status)
@@ -90,7 +90,7 @@ class Container(QtWidgets.QWidget):
         self.c = Connection()
         lst = self.c.getContainersDetail()
         self.list_widget.UpdateList(lst)
-        label = QLabel('IMAGES VIEWER')
+        label = QLabel('CONTAINER LIST')
         label.setStyleSheet('font-size: 16pt;')
         vertical_layout = QtWidgets.QVBoxLayout()
         vertical_layout.addWidget(label)
