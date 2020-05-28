@@ -7,6 +7,7 @@ class User():
 
     def setup(self):
         self.image_list = self.client.images.list()
+        self.volume_list = self.client.volumes.list()
 
     def addImage(self, image):
         self.image_list.append(image)
@@ -50,6 +51,39 @@ class User():
     
     def removeImage(self, image):
         self.client.images.remove(image, True, True)
+
+    def getVolumeList(self):
+        return self.volume_list
+
+    def addVolumeToList(self, volume):
+        self.volume_list.append(volume)
+
+    def getVolumeID(self, index) -> str:
+        return self.volume_list[index].id
+
+    def removeVolume(self, volume):
+        volume.remove(force = True)
+
+    def getVolumeMountPoint(self, index) -> str:
+        volume = self.volume_list[index]
+        return volume.attrs['Mountpoint']
+        
+    def getVolumeDriver(self, index) -> str:
+        volume = self.volume_list[index]
+        return volume.attrs['Driver']
+
+    def getVolumeCreatedDate(self, index) -> str:
+        volume = self.volume_list[index]
+        return volume.attrs['CreatedAt']
+
+    def addVolume(self, name):
+        try: 
+            new_volume = self.client.volumes.create(name)
+            self.addVolumeToList(new_volume)
+            return new_volume
+        except:
+            return False
+
 
     
         

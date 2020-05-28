@@ -70,18 +70,21 @@ class ListImages(QWidget):
             return
         temp = []
         for image in self.images_list:
-            print(keyword, image.tags[0])
             if keyword in image.tags[0]:
                 temp.append(image)
         
         self.images_list = temp
-        self.refreshButtonIsClicked(self.images_list)
+        self.refresh(self.images_list)
         return
 
-    def refreshButtonIsClicked(self, images_list = None):
+    def refreshButtonIsClicked(self):
         self.listImageView.clear()
-        if images_list == None:
-            images_list = self.user.getImagesList()
+        images_list = self.user.getImagesList()
+        self.createImageList(images_list)
+        return
+    
+    def refresh(self, images_list):
+        self.listImageView.clear()
         self.createImageList(images_list)
         return
     
@@ -97,6 +100,10 @@ class ListImages(QWidget):
 
 
     def createImageList(self, image_list):
+        header = ['Id', 'Tags', 'Size', 'Created']
+        imageDetail = ImageDetails(header, True)
+        self.createListItem(imageDetail)
+
         self.images_list = image_list
         for i in range(len(image_list)):
             imageDetail = ImageDetails(self.user.getImageDetail(i))
@@ -158,11 +165,3 @@ class ListImages(QWidget):
         self.selected_image_list.clear()
         self.refreshButtonIsClicked()
      
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = ListImages()
-    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = False)
-    # apply_stylesheet(app, theme='dark_teal.xml', light_secondary = True)
-    window.show()
-
-    sys.exit(app.exec_())

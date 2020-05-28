@@ -11,11 +11,13 @@ from Log import Log
 from Graph import Graph
 from ContainerStat import ContainerStat
 from Images import ListImages
+from VolumeList import VolumeList
+from Dashboard import Dashboard
 
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setMinimumSize(800,600)
+        self.setMinimumSize(1200 ,800)
 
         #create side menu 
         self.listView = QListWidget()
@@ -26,24 +28,20 @@ class MainWindow(QWidget):
         self.stack = QStackedWidget (self)
         
         # add widget of each page here
-        # home dashboard stack service container images config
+        # home dashboard stack service container images volume
         self.homepage = Homepage()
-        self.log = ContainerStat('CPU USAGE', [0,1,2], [0,1,2], 'MEMORY', [0,1,2], [0,1,2], 'NETWORK', [0,1,2], [0,1,2])
-        self.stack3 = QWidget()
-        self.stack4 = QWidget()
+        self.dashboard = Dashboard(1 ,2 ,3 ,4 ,5)
         self.stack5 = QWidget()
         self.images = ListImages()
-        self.stack7 = QWidget()
+        self.volumes = VolumeList()
 
         # self.log = Log('text.txt')
 
         self.stack.addWidget (self.homepage)
-        self.stack.addWidget (self.log)
-        self.stack.addWidget (self.stack3)
-        self.stack.addWidget (self.stack4)
+        self.stack.addWidget (self.dashboard)
         self.stack.addWidget (self.stack5)
         self.stack.addWidget (self.images)
-        self.stack.addWidget (self.stack7)
+        self.stack.addWidget (self.volumes)
 
 
         self.layout = QHBoxLayout(self)
@@ -56,7 +54,7 @@ class MainWindow(QWidget):
         self.setupMenu()
 
     def setupMenu(self):
-        menuList = ['HOME', 'DASHBOARD', 'STACKS', 'SERVICE', 'CONTAINERS', 'IMAGES', 'CONFIGS']
+        menuList = ['HOME', 'DASHBOARD', 'CONTAINERS', 'IMAGES', 'VOLUMES']
         for i in range (len(menuList)):
             self.listView.insertItem(i, menuList[i])
             # self.listView.item(i).setFont(QFont('Roboto', 16))
@@ -68,7 +66,7 @@ class MainWindow(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = False)
+    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = True)
     # apply_stylesheet(app, theme='dark_teal.xml', light_secondary = True)
     window.show()
 
