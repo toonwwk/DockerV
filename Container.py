@@ -83,6 +83,7 @@ class Container(QtWidgets.QWidget):
         vertical_layout.addWidget(label)
         vertical_layout.addWidget(self.button_array)
         vertical_layout.addWidget(self.list_widget)
+        vertical_layout.setSpacing(20)
         self.setLayout(vertical_layout)
         self.show()
 

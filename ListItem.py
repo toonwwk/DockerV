@@ -7,9 +7,10 @@ from ClickableLabel import ClickableLabel
 
 
 class ContainerListItem(QtWidgets.QWidget):
-    def __init__(self, c_name, i_name, ip,  owner, id, status, ports=[]):
+    def __init__(self, c_name, i_name, ip,  owner, id, status, ports=[], is_header = False):
         super(ContainerListItem, self).__init__()
-        self.check_box = QtWidgets.QCheckBox()
+        self.check_box = QtWidgets.QCheckBox() 
+        self.check_box.setMinimumSize(30, 50)       
         self.container_name = ClickableLabel(c_name)
         self.container_name.setMinimumSize(200, 50)
         self.image_name = ClickableLabel(i_name)
@@ -20,6 +21,7 @@ class ContainerListItem(QtWidgets.QWidget):
         self.ports.setMinimumSize(100, 50)
         self.ownerships = QtWidgets.QLabel(owner)
         self.id = id
+        self.is_header = is_header
         self.status_button = QtWidgets.QPushButton(status)
         self.status_button.setFlat(True)
         self.set_ui()
@@ -27,7 +29,12 @@ class ContainerListItem(QtWidgets.QWidget):
 
     def set_ui(self):
         layout = QtWidgets.QHBoxLayout()
-        layout.addWidget(self.check_box)
+        if is_header:
+            temp = QWidgets.QLabel('')
+            temp.setMinimumSize(30, 50)
+            layout.addWidget(temp)
+        else:
+            layout.addWidget(self.check_box)
         layout.addWidget(self.status_button)
         layout.addWidget(self.container_name)
         layout.addWidget(self.image_name)

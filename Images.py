@@ -37,12 +37,13 @@ class ListImages(QWidget):
         self.createImageList(self.images_list)
         
         # Button Setup
-        self.buttonTab = ButtonWidget(3)
-        self.buttonTab.setupButtons(['Refresh', 'Pull', 'Remove'], ['#397D00', 'Red', '#b06a00'])
+        self.buttonTab = ButtonWidget(4)
+        self.buttonTab.setupButtons(['Refresh', 'Pull', 'Build', 'Remove'], ['#397D00', 'Red', 'Blue', '#b06a00'])
         self.buttonList = self.buttonTab.getButtonList()
         self.buttonList[0].clicked.connect(self.refreshButtonIsClicked)
         self.buttonList[1].clicked.connect(self.pullButtonIsClicked)
-        self.buttonList[2].clicked.connect(self.removeButtonIsClicked)
+        self.buttonList[2].clicked.connect(self.buildButtonIsClicked)
+        self.buttonList[3].clicked.connect(self.removeButtonIsClicked)
 
         # Row Setup
         self.row1 = QHBoxLayout()
@@ -94,7 +95,7 @@ class ListImages(QWidget):
         item.setSizeHint(QtCore.QSize(100, 60))
         item.setFlags(Qt.NoItemFlags)
         cb = image_detail.getCheckbox()
-        self.checkbox_tag_dic[cb] = image_detail.getTag()
+        self.checkbox_tag_dic[cb] = image_detail.getId()
         self.listImageView.addItem(item)
         self.listImageView.setItemWidget(item, image_detail)
         cb.stateChanged.connect(lambda state, c = cb:(self.checkboxIsPressed(c)))
@@ -116,6 +117,43 @@ class ListImages(QWidget):
         else:
             self.selected_image_list.remove(self.checkbox_tag_dic[cb])
 
+    def buildButtonIsClicked(self):
+        self.dlg = QDialog(self)
+        self.dlg.setWindowTitle("Build Image")
+        label = QLabel("Enter path to directoty")
+        label.setStyleSheet('font-size: 14pt; font-weight: bold;')
+        self.path = QLineEdit()
+        self.path.setPlaceholderText('eg. user\dockerV')
+        pull_button = QPushButton('Build')
+        pull_button.clicked.connect(self.buildExecuteButtonIsClicked)
+        cancel_button = QPushButton('Cancel')
+        cancel_button.clicked.connect(self.cancelButtonIsClicked)
+        sub_layout1 = QHBoxLayout()
+        sub_layout1.addWidget(label)
+        sub_layout1.addWidget(self.path)
+        sub_layout2 = QHBoxLayout()
+        sub_layout2.addWidget(pull_button)
+        sub_layout2.addWidget(cancel_button)
+        sub_layout2.setAlignment(Qt.AlignCenter)
+        layout = QVBoxLayout(self.dlg)
+        layout.addLayout(sub_layout1)
+        layout.addLayout(sub_layout2)
+        layout.setAlignment(Qt.AlignCenter)
+        self.dlg.setMinimumSize(500 ,100)
+        self.dlg.exec_()
+    
+    def buildExecuteButtonIsClicked(self):
+        path_to_directory = str(self.path.text())
+        if len(path_to_directory) > 0:
+            print(path_to_directory)
+            try:
+                self.user.client.images.build(path = path_to_directory)
+                self.user.setup()
+                self.refreshButtonIsClicked()
+                self.dlg.close()
+            except:
+                self.path.setText('')
+                self.path.setPlaceholderText('invalid path or don\'t has docker file')
 
     def pullButtonIsClicked(self):        
         self.dlg = QDialog(self)

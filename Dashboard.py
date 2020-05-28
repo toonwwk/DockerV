@@ -29,14 +29,17 @@ class Dashboard(QWidget):
         images_labels = self.images.getClickableLabel()
         images_labels[0].clicked.connect(self.imagesIsClicked)
         images_labels[1].clicked.connect(self.imagesIsClicked)
+        self.image_number = images_labels[0]
 
         containers_labels = self.containers.getClickableLabel()
         containers_labels[0].clicked.connect(self.containersIsClicked)
         containers_labels[1].clicked.connect(self.containersIsClicked)
+        self.container_number = containers_labels[0]
 
         volumes_labels = self.volumes.getClickableLabel()
         volumes_labels[0].clicked.connect(self.volumesIsClicked)
         volumes_labels[1].clicked.connect(self.volumesIsClicked)
+        self.volume_number = volumes_labels[0]
 
         # Setup Qt
         self.label = QLabel('DASHBOARD')
@@ -60,6 +63,12 @@ class Dashboard(QWidget):
         layout.setSpacing(150)
 
     
+    def setup(self, container_number, image_number, volume_number):
+        self.container_number.setText(str(container_number))
+        self.image_number.setText(str(image_number))
+        self.volume_number.setText(str(volume_number))
+        return
+
     def imagesIsClicked(self):
         self.list_widget.setCurrentRow(3, QItemSelectionModel.ClearAndSelect)
         return

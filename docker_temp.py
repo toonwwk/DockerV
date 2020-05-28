@@ -26,14 +26,21 @@ class User():
     
     def getNumberOfImageList(self):
         return len(self.image_list)
+
+    def getNumberOfVolumeList(self):
+        return len(self.volume_list)
     
     def getImageID(self, index) -> str:
         return self.image_list[index].id
 
     def getImageTags(self, index) -> str:
-        image =  self.image_list[index]
-        image_tags = image.tags[0]
-        return image_tags[0:image_tags.rfind(':')]
+        try:
+            image =  self.image_list[index]
+            image_tags = image.tags[0]
+            image_tags = image_tags[0:image_tags.rfind(':')]
+        except:
+            image_tags = ''
+        return image_tags
 
     def getImageSize(self, index) -> int:
         image =  self.image_list[index]

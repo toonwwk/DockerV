@@ -74,5 +74,8 @@ class ImageDetails(QWidget):
     def getTag(self):
         return self.imageDetail[1]
 
+    def getId(self):
+        return self.imageDetail[0]
+
 
 

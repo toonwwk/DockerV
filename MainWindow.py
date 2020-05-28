@@ -34,7 +34,8 @@ class MainWindow(QWidget):
         # add widget of each page here
         # home dashboard stack service container images volume
         self.homepage = Homepage()
-        self.dashboard = Dashboard(1 ,2 ,3, self.listView)
+        self.dashboard = Dashboard(1 , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList(), self.listView)
+        
         self.container = Container()
         self.images = ListImages(self.user)
         self.volumes = VolumeList(self.user)
@@ -46,7 +47,6 @@ class MainWindow(QWidget):
         self.stack.addWidget (self.container)
         self.stack.addWidget (self.images)
         self.stack.addWidget (self.volumes)
-
 
         self.layout = QHBoxLayout(self)
         self.layout.setAlignment(Qt.AlignTop)
@@ -64,13 +64,16 @@ class MainWindow(QWidget):
 
     def on_selection_changed(self):
         index = self.listView.currentRow()
+        if index == 1:
+            self.dashboard.setup(1 , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList())
+
         self.stack.setCurrentIndex(index)
      
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = True)
-    # apply_stylesheet(app, theme='dark_teal.xml', light_secondary = True)
+    # app.setStyle('WindowsVista')
+    apply_stylesheet(app, theme='dark_blue.xml', light_secondary = False)
     window.show()
 
     sys.exit(app.exec_())
