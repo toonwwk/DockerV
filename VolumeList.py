@@ -98,6 +98,9 @@ class VolumeList(QWidget):
             self.selected_volume_list.append(self.checkbox_volume_dic[cb])
         else:
             self.selected_volume_list.remove(self.checkbox_volume_dic[cb])
+        
+        print(self.selected_volume_list)
+
                 
     def addButtonIsClicked(self):
         self.dlg = QDialog(self)
@@ -138,12 +141,13 @@ class VolumeList(QWidget):
     def removeButtonIsClicked(self):
         for volume in self.selected_volume_list:
             self.user.removeVolume(volume)
+        self.selected_volume_list.clear()
         self.refresh()
 
     def refresh(self):
         self.volume_list_view.clear()
-        self.user.setup() 
-        self.volume_list = self.user.getVolumeList()
+        self.user.setup()
+        self.volume_list = self.user.getVolumeList() 
         self.setup() 
 
     def cancelButtonIsClicked(self):

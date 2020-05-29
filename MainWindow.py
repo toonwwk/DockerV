@@ -15,14 +15,13 @@ from ContainerStat import ContainerStat
 from Images import ListImages
 from VolumeList import VolumeList
 from Dashboard import Dashboard
-from docker_temp import User
 from Container import Container
-
+from Connection import Connection
 
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.user = User()
+        self.user = Connection()
         self.setMinimumSize(1200 ,800)
 
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,7 +46,7 @@ class MainWindow(QWidget):
         # add widget of each page here
         # home dashboard stack service container images volume
         self.homepage = Homepage()
-        self.dashboard = Dashboard(1 , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList(), self.listView)
+        self.dashboard = Dashboard(len(self.user.getContainersDetail()) , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList(), self.listView)
         
         self.container = Container(self.user)
         self.images = ListImages(self.user)
@@ -83,14 +82,13 @@ class MainWindow(QWidget):
     def on_selection_changed(self):
         index = self.listView.currentRow()
         if index == 1:
-            self.dashboard.setup(1 , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList())
+            self.dashboard.setup(len(self.user.getContainersDetail()) , self.user.getNumberOfImageList(), self.user.getNumberOfVolumeList())
 
         self.stack.setCurrentIndex(index)
      
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
-    # app.setStyle('WindowsVista')
     apply_stylesheet(app, theme='dark_blue.xml', light_secondary = False)
     window.show()
 

@@ -3,7 +3,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from ListItem import ContainerListItem
 from Connection import Connection
 from ButtonTabWidget import ButtonWidget
-from Popup import Popup, CreateContainerForm
+from Popup import Popup
 from docker_temp import User
 
 from PySide2.QtWidgets import *
@@ -180,43 +180,29 @@ class Container(QtWidgets.QWidget):
     def createContainerForm(self):
         self.containerForm = QDialog()
         
-        name = QLabel('Name')
         image = QLabel('Image')
-        review = QLabel('Port Mapping')
-        env = QLabel('Environmental variables')
 
-        self.nameEdit = QLineEdit()
         self.imageEdit = QLineEdit()
-        self.reviewEdit = QTextEdit()
-        self.envEdit = QTextEdit()
+
 
         grid = QGridLayout()
         grid.setSpacing(10)
 
-        grid.addWidget(name, 1, 0)
-        grid.addWidget(self.nameEdit, 1, 1)
 
-        grid.addWidget(image, 2, 0)
-        grid.addWidget(self.imageEdit, 2, 1)
-
-        grid.addWidget(review, 3, 0)
-        grid.addWidget(self.reviewEdit, 3, 1, 1, 1)
-
-        grid.addWidget(env, 6, 0)
-        grid.addWidget(self.envEdit, 6, 1, 2, 1)
+        grid.addWidget(image, 1, 0)
+        grid.addWidget(self.imageEdit, 1, 1)
 
         ok = QPushButton("Ok")
-        grid.addWidget(ok, 10, 0)
+        grid.addWidget(ok, 2, 0)
         ok.clicked.connect(self.executeCreateContainer)
 
-
         cancel = QPushButton("Cancel")
-        grid.addWidget(cancel, 10, 1, 1, 1)
+        grid.addWidget(cancel, 2, 1, 1, 1)
         cancel.clicked.connect(self.cancelButtonIsClicked)
 
         self.containerForm.setLayout(grid)
 
-        self.containerForm.setGeometry(300, 300, 500, 500)
+        self.containerForm.setGeometry(300, 300, 500, 200)
         self.containerForm.setWindowTitle('Create container')
 
         self.containerForm.exec_()

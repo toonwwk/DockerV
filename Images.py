@@ -81,9 +81,11 @@ class ListImages(QWidget):
             return
         temp = []
         for image in self.images_list:
-            if keyword in image.tags[0]:
-                print(image.tags[0])
-                temp.append(image)
+            try:
+                if keyword in image.tags[0]:
+                    temp.append(image)
+            except:
+                pass
         
         self.images_list = temp
         self.user.setImageList(self.images_list)

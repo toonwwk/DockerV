@@ -33,11 +33,7 @@ class ImageDetails(QWidget):
         self.image_size = ClickableLabel(self.imageDetail[2])
         self.image_size.setMinimumSize(80, 50)
         self.image_date = ClickableLabel(self.imageDetail[3])
-        self.image_date.setMinimumSize(200, 50)
-
-
-        self.image_id.clicked.connect(self.press1)
-        
+        self.image_date.setMinimumSize(200, 50)        
 
         layout.setSpacing(10)
         layout.addWidget(self.check_box)
@@ -49,10 +45,6 @@ class ImageDetails(QWidget):
 
         
         self.setLayout(layout)
-
-
-    def press1(self):
-        print("pressed")
 
     def formatString(self):
         unit_list = ['KB', 'MB', 'GB']
